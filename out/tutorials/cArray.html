@@ -1,0 +1,12 @@
+<h1>Arrays in C</h1>
+In C arrays function similarly to most languages although they are stored on the stack instead of the heap. The use of Size_T type variables is recommended for 
+indexing the array as this is a type directly built for indexing arrays. C arrays do not have length attached to them, although if in the same stack
+that the array was created the user can get the total bits of the array and divide by the bits of its type. Keep in mind that will only work for arrays and not
+linked lists, and will not work if the array was passed via a parameter to the current stack. 
+<br>
+I have included graphics and sketches to help explain how arrays work in C at a deeper level.
+<br>
+see the below sketch and nots for a more detailed view of how arrays are stored in memory. Keep in mind <a href="https://en.wikipedia.org/wiki/Endianness">Little vs Big endian</a>
+<img src="https://github.com/mattieFM/techdocs/blob/main/static/EndianCArrayExplaination.png?raw=true">
+
+<img src="https://github.com/mattieFM/techdocs/blob/main/static/moreOnArrays.png?raw=true">
