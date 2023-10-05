@@ -1,0 +1,115 @@
+<meta name="keywords" content="Deb, Deb Harding, UCCS 2060, UCCS, Deb Harding, uccs Deb Harding">
+
+
+<body>
+    <h1>Things to do to pass Deb's Classes</h1>
+    <ul>
+        <li>
+
+            
+            <h2>Design Notebook</h2>
+            A note on the design notebook before we move on. I admit in a class of this level it is a bit silly to use (for people who have experience)
+            but for people with little to no experience, it is a very good idea to get started with proper design principles early instead of learning
+            them by neccecaty when a project exceeds their capacity. <i>If you are experienced</i> then play along and roll play as though you were turning 
+            a more important design into your boss. Pretend that you actually have a customer and think about it in that perspective and extrapolate what they might
+            want from what they say, you don't have to implement it, just comment on it and think of designs and maybe write a few.
+            
+            <!-- Design Note Book Unordered List -->
+            <ul>
+                <!-- Design Note Book must dos -->
+                <h3>MUST DOS:</h6>
+                <li><b>Include Tasks.</b> That is read all user stories and requirements and parse that into information on exactly what you need to do and what you don't
+                you are free to speculate and consider additional things, just ensure your provide a well formatted list or flow chart of all functionality of the program
+                broken down into tasks</li>
+                <li>
+                    <b>Include Test Cases.</b> provide a nicely formatted chart of expected I/O. Think of it from the stand point of writing an auto grader for your assignment. If
+                    you were to write that auto grader, think of everything you would want to check for, what might cause issues, what should throw errors, what should silently handle
+                    errors, what should pass what should fail. <i>Best Practice:</i> put breaking cases as the top of the list, IE: any case that might crash or throw an error.
+                </li>
+                    <b>Function Prototypes.</b> Include function Prototypes in your designs, that is: what does this function take IE: parameters and what does this function return.
+                    Keep in mind passing parameters as constants and making sure you specify type and var name in prototypes.
+                <li>
+                    <b>Function Psuodocode.</b> Include psuodocode for every function that you wrote a prototype for. <i>Best practice:</i> Also include some psuodocode for any tasks you didn't
+                    write prototypes for, just indicate that you thought about implementing it and changed your mind.
+                    <br>
+                    <i>Note on psuodocode:</i> Deb has a very broad definition of psuodocode unlike some profs who want text only. I recommend including pictures, diagrams or flowcharts
+                    mixed into or nearby your psuodocode.
+                </li>
+                <li>
+                    <b>Pictures, Pictures, Pictures:</b> Include as many pictures and diagrams as you can to help explain things. <b>MUST:</b> include pictures relating to main's flow
+                    and any hard concept, she does not list this explicitly but I strongly strongly, recommend doing so. 
+                </li>
+                    
+                </li>
+            </ul>
+                <ul>
+                       <!-- Design Note Book best Practices -->
+                    <h3>Best Practices:</h6>
+                    <li><b>Line Comments</b>Any non-standard methodology should have a line comment above it. By Deb's standards this means anything that does not have a simple and direct
+                    parallel to another language. Her goto example for what to add line comments to is how to clear the buffer and explaining why. </li>
+
+                    <li><b>Link Resources.</b> Often on guided explorations there will be a section to list all the resources you used to complete the project.
+                    if you did not use any you should lie and find some. People are very often doced points for not linking any. I recommend linking the slides the standard c library
+                    and cert C security standard website. Add more as applicable but those should be mostly enough.</li>
+
+                    <li><b>Show up to office hours.</b> Show up to office hours and ask about assignments if you are confused, she sometimes will clarify on points or tell you
+                    directly that you will lose points if you do x, y or z. If you don't wanna take the gamble of her grading TA hours are the best to get TA's to tell you 
+                    what will lose you points, but her office hours also work. </li>
+                </ul>
+            
+            <!-- Code Unordered List -->
+            <li>
+                <h2>Coding Style</h2>
+                <ul>
+                    <!-- Code Must Dos -->
+                    <h3>MUST DOS:</h6>
+                    <li><b>YOU WILL GET A 0% if you use infinite loops</b></li>
+                    <li><b>DO NOT use break statements</b></li>
+                    <li><b>DO NOT use multiple returns.</b> (both her and myself are aware there are very good uses for this, stop being a smart ass and follow her style for her class)
+                    <br>
+                    If you need an explanation, she is trying to teach structured programming, and a lot of people use multiple returns as a crutch. Its easier to disallow them for everyone than 
+                    try to check if people are using them well or not. 
+                    </li>
+                      <!-- Code Documentation Style Unordered List -->
+                    <li><b>Documentation Style</b>
+                        <ul>
+                            <li><b>Documentation Comments.</b> 
+                                <br>Place documentation comments above every function. 
+                                <br>They should provide a brief description, the params, and the return type
+                            Documentation comments should be placed above prototypes, I followed DoxGen C standard and she was fine with that. I recommend choosing any popular standardized
+                            documentation style and declaring that you are following that standard.
+                            <img src="https://github.com/mattieFM/techdocs/blob/main/static/documentationCommentExample.png?raw=true">
+                            <li>
+                                <b>Header Comments.</b>
+                                <br>
+                                You should start every c program with a multiline comment at the top of your code with the following:
+                                <!-- Code Documentation Style Header Comments List -->
+                                <ul>
+                                    <li>Your Name</li>
+                                    <li>Class # and section # and the days the class meets IE: CS2060-001(mon/wed)</li>
+                                    <li>Brief description of the project. Do not use general language, pretend you are writing a real description of a real project.
+                                        What does this program do? Don't focus on what it will teach you, focus on what it does here.
+                                    </li>
+                                    <li>The documentation style you are following IE: Documentation Style: DoxGen C Standard.</li>
+                                    <li>The Security Standard you are following. Deb uses: Security Standard: SEI CERT C Standard. Don't be fancy and use something else unless you talk to her first</li>
+                                    <li>(optional) I like to add a note to the grader explaining specific choices, not a neccecaty, but might save you a point or two on occasion.</li>
+                                </ul>
+                                <img src="https://github.com/mattieFM/techdocs/blob/main/static/headerComments.png?raw=true">
+                            </li>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <b>Clearing the Buffer.</b> 
+                        <ul>
+                            <li>Use <code>While(getchar())</code> to clear entire buffer</li>
+                            <li>Use <code>While(getchar() != '\n')</code> to clear buffer until newline</li>
+                            <li><b>DO NOT use fflush(stdin) or similar functions. Use getChar or you will lose points</b></li>
+                        </ul>
+                        
+                    </li>
+                </ul>
+            </li>
+        </li>
+    </ul>
+</body>
