@@ -21,6 +21,12 @@
         <li> <code>while(getChar() != '\n')</code> <b>Clears Buffer till next newline.</b> This will loop while the current char in the buffer is not a new line, thereby clearing the entire buffer upto and including the next newline.</li>
         <li> <code>int fflush(File*stream); </code> This is the prototype of the flush method, it can be used on any steam (buffers are a stream), don't use this without knowing what you are doing. DO NOT USE IN DEB's CLASS.</li>
     </ul>
+    
+    <h1>Types and bools</h1>
+    In c bools are not immediately imported, they need to be included with <code>#include &lt;stdbool&gt;;</code> then the bool type will exist.
+    <br>
+    I bring this up to segway into a bigger point about C. Given its nature and ability to be very small and run on micro controllers, 
+    you have to import just about everything you would want to use. It has a ton of features built into it, but to use them you need to include them.
 
 
 </body>

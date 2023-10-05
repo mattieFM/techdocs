@@ -17,10 +17,13 @@
     The buffer can be cleared in many ways. The one that Deb would like for Cs2060 is while(getChar()). remember to clear the buffer once you have gotten the input you wanted.
     <!--* List of ways to clear buffer --->
     <ul>
-        <li> <code>while(getChar())</code>. <b>Clears Entire Buffer.</b>This will loop while there is a char left in the buffer, there by stopping when the buffer is empty.</li>
+        <li> <code>while(getChar())</code>. <b>Clears Entire Buffer.</b> This will loop while there is a char left in the buffer, there by stopping when the buffer is empty.</li>
         <li> <code>while(getChar() != '\n')</code> <b>Clears Buffer till next newline.</b> This will loop while the current char in the buffer is not a new line, thereby clearing the entire buffer upto and including the next newline.</li>
         <li> <code>int fflush(File*stream); </code> This is the prototype of the flush method, it can be used on any steam (buffers are a stream), don't use this without knowing what you are doing. DO NOT USE IN DEB's CLASS.</li>
     </ul>
+    
+    <h1>Bools</h1>
+    In c bools are not immidietly standard, they need to be included with <code>#include &lt;stdbool&gt;</code>
 
 
 </body>
