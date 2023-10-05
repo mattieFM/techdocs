@@ -1,0 +1,24 @@
+{
+  "name": "techdocs",
+  "version": "1.0.0",
+  "description": "technical documentation for classes",
+  "main": "index.js",
+  "scripts": {
+    "build:docs": "jsdoc -c ./conf.json -r"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattieFM/techdocs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mattieFM/techdocs/issues"
+  },
+  "homepage": "https://github.com/mattieFM/techdocs#readme",
+  "dependencies": {
+    "jsdoc": "^4.0.2",
+    "taffydb": "^2.7.3",
+    "tui-jsdoc-template": "^1.2.2"
+  }
+}
