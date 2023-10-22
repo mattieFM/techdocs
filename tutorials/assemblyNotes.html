@@ -1,0 +1,129 @@
+<style>
+    table { 
+        border-collapse: collapse; 
+        vertical-align: top;
+        text-align: left;
+    }
+    th{ border: solid thin; }
+    tr { border: solid thin; }
+    tr:nth-child(even) {
+        background-color: rgba(10,10,10,.1);
+        background-blend-mode: multiply;
+    }
+   
+    </style>
+
+<h1>Assembly x86-64 notes</h1>
+
+See: <a href="https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf">this</a> for a good cheat sheet (rendered at bottom of this page)
+
+Remember: a byte is 8 bits, 2 hex chars is one byte. so 0x23 is one byte, likewise 0010 0011 is one byte.
+
+<h3>Suffixes</h3>
+<ul>
+    <li>Suffix <b>'b'</b> refers to a one byte integer, (short for 'byte')</li>
+    <li>Suffix <b>'w'</b> refers to a two byte integer, (short for 'word')</li>
+    <li>Suffix <b>'l'</b> refers to a four byte integer, (short for 'doubleword')</li>
+    <li>Suffix <b>'q'</b> refers to a eight byte value, (short for 'quadword')</li>
+</ul>
+
+<h3>Registers</h3>
+There are 16 64-bit registers in x86-64. There are two main types of registers:
+<ul>
+    <li><b>Callee-Save Registers:</b> These registers are saved across function calls </li>
+    <li><b>Caller-Save Registers:</b> These registers are not necessarily saves across function calls. </li>
+</ul>
+Registers are split into subdivisions of 8 bytes (64bit), 4 bytes (32bit), 2 bytes (16bit), 1 byte (8bit). With keywords as shown below:
+<img src="https://github.com/mattieFM/techdocs/blob/main/static/registerKeywords.png?raw=true">
+This is due to how the technology evolved through the years progressing from 8bit->16bit->32bit->64bit. So we kept these keywords to allow backwards compatibility (and optimization?).
+<ul>
+    <h4>Callee-Save Registers registers</h4>
+    <table>
+        <tr>
+            <th>Register Name</th>
+            <th>Notes</th>
+        </tr>
+
+        <tr>
+            <th>%rbp</th>
+            <th></th>
+        </tr>
+        
+    </table>
+  
+    <li>%rbp</li>
+    <li>%r[12-15]</li>
+
+    <h4>Caller-Save registers</h4>
+    <table>
+        <tr>
+            <th>Register Name</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <th>%rbx</th>
+        </tr>
+        <tr>
+            <th>%rax</th>
+            <th><b>Return Value</b>Conventionally used for storing the return value if the return value is less than 64bits otherwise the stack must be used.</th>
+        </tr>
+            
+            <th>%rcx</th>
+            <th>%rdx</th>
+            
+  
+            <tr>
+                <th>%rsp</th>
+                <th><b>Top of Stack Pointer</b> used to point to the topmost element of the stack, (remember that stack grows from high memory address to low memory address)</th>
+            </tr>
+            <tr>
+                <th>%rbp</th>
+                <th><b>Bottom of Stack Pointer</b> used to point to the base of the current stack frame. When a function is called the function will save the previous base pointer and then update the base pointer to its own base of stack and then restore the original once the function returns. Keep in mind that this will be higher in value than the base pointer as stack grows from high->low</th>
+            </tr>
+            
+            <th>%r[8-11]</th>
+      
+    </table>
+    <h5>Parameters</h5>
+    Used to pass the first six integer or pointer parameters to called functions. Any additional parameters (or parameters bigger than 64 bit should be passed via stack)
+    <table>
+        <tr>
+            <th>Register Name</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <th>%rdi</th>
+        </tr>
+        <tr>
+            <th>%rsi</th>
+        </tr>
+        <tr>
+            <th>%rdx</th>
+        </tr>
+        <tr>
+            <th>%rcx</th>
+        </tr>
+        <tr>
+            <th>%r8</th>
+        </tr>
+        <tr>
+            <th>%r9</th>
+        </tr>
+    </table>
+    
+
+   
+</ul>
+
+<h3>Cmds</h3>
+Ordered from most used (in the bomb lab of CS2160 UCCS) to least used.
+<ul>
+    <li><b>Sub S, D</b> subtract source from destination</li>
+</ul>
+
+<h1>Good Cheat Sheet for x86-64</h1>
+<iframe src="https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf" width="100%" height="100%"></iframe>
+
+
+<h1>Good Cheat Sheet for gdb (GNU debugger)</h1>
+<iframe src="http://csapp.cs.cmu.edu/2e/docs/gdbnotes-x86-64.pdf" width="100%" height="100%"></iframe>
