@@ -11,13 +11,12 @@
         background-blend-mode: multiply;
     }
    
-    </style>
+</style>
 
 <h1>Assembly x86-64 notes</h1>
-
-See: <a href="https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf">this</a> for a good cheat sheet (rendered at bottom of this page)
-
 Remember: a byte is 8 bits, 2 hex chars is one byte. so 0x23 is one byte, likewise 0010 0011 is one byte.
+the $ operator appears to indicate literal value?
+<a href="https://godbolt.org/"> Online c->assembly compiler</a> very useful.
 
 <h3>Suffixes</h3>
 <ul>
@@ -35,6 +34,7 @@ There are 16 64-bit registers in x86-64. There are two main types of registers:
 </ul>
 Registers are split into subdivisions of 8 bytes (64bit), 4 bytes (32bit), 2 bytes (16bit), 1 byte (8bit). With keywords as shown below:
 <img src="https://github.com/mattieFM/techdocs/blob/main/static/registerKeywords.png?raw=true">
+<br>
 This is due to how the technology evolved through the years progressing from 8bit->16bit->32bit->64bit. So we kept these keywords to allow backwards compatibility (and optimization?).
 <ul>
     <h4>Callee-Save Registers registers</h4>
@@ -68,20 +68,29 @@ This is due to how the technology evolved through the years progressing from 8bi
             <th><b>Return Value</b>Conventionally used for storing the return value if the return value is less than 64bits otherwise the stack must be used.</th>
         </tr>
             
+        <tr>
             <th>%rcx</th>
+        </tr>
+         
+        <tr>
             <th>%rdx</th>
+        </tr>
+           
             
   
-            <tr>
-                <th>%rsp</th>
-                <th><b>Top of Stack Pointer</b> used to point to the topmost element of the stack, (remember that stack grows from high memory address to low memory address)</th>
-            </tr>
-            <tr>
-                <th>%rbp</th>
-                <th><b>Bottom of Stack Pointer</b> used to point to the base of the current stack frame. When a function is called the function will save the previous base pointer and then update the base pointer to its own base of stack and then restore the original once the function returns. Keep in mind that this will be higher in value than the base pointer as stack grows from high->low</th>
-            </tr>
+        <tr>
+            <th>%rsp</th>
+            <th><b>Top of Stack Pointer</b> used to point to the topmost element of the stack, (remember that stack grows from high memory address to low memory address)</th>
+        </tr>
+        <tr>
+            <th>%rbp</th>
+            <th><b>Bottom of Stack Pointer</b> used to point to the base of the current stack frame. When a function is called the function will save the previous base pointer and then update the base pointer to its own base of stack and then restore the original once the function returns. Keep in mind that this will be higher in value than the base pointer as stack grows from high->low</th>
+        </tr>
             
+        <tr>
             <th>%r[8-11]</th>
+        </tr>
+       
       
     </table>
     <h5>Parameters</h5>
@@ -110,15 +119,78 @@ This is due to how the technology evolved through the years progressing from 8bi
             <th>%r9</th>
         </tr>
     </table>
+
+    <h5>Flags</h3>
+        In x86-64 there are 64 flags as flags are stored in one register called the Flag register and thus there are flags equal to the number of bits of the current architecture.<br>
+
+        Im not going to list all of them here, just the ones that I need to take note of, see: <a href="https://en.wikipedia.org/wiki/FLAGS_register">this</a> for all flags.
+        <br>
+        <table>
+            <tr>
+                <th>FLAG NAME</th>
+                <th>name</th>
+                <th>uses</th>
+            </tr>
+            <tr>
+                <th>
+                    ZF
+                </th>
+                <th>
+                    Zero Flag
+                </th>
+                <th>
+                     <ul>
+                        <li>used by je to jump if 0</li>
+                        <li>used by jne to jump if ~0</li>
+                        <li>used by test to store output of test into.</li>
+                     </ul>
+                </th>
+            </tr>
+        </table>
     
 
    
 </ul>
 
+
 <h3>Cmds</h3>
 Ordered from most used (in the bomb lab of CS2160 UCCS) to least used.
 <ul>
     <li><b>Sub S, D</b> subtract source from destination</li>
+    <li><b>Mov S, D</b> move source to destination</li>
+    <li><b>Call Label</b> call the code at the location of the label? </li>
+    <li><b>Test C2, C1</b> perform the AND operation on C1 AND C2, and set ZF (the zero flag) when the result of C1 && C2 is 0. </li>
+    <li><b>je Label</b> jump to the label when ZF (the zero flag is 0). Conditional jump on ZE. Appears that 'jz' might be an alias of this</li>
+    <li><b>jne Label</b> jump to the label when ZF (the zero flag is 1). Conditional jump on ~ZF. Appears that 'jnz' might be an alias of this</li>
+    <li><b>ret</b> Pop the return address from the base of the stack and jump to it.</li>
+    <li><b>cmp C2, C1</b> 
+        perform the same operation as sub C1, C2 and update flags<br>
+        ZF = (C1-C2 == 0)<br>
+        CF = (whether an arithmetic carry or borrow occurred within the MSU (most significant arithmetic logic unit) when C1-C2 was performed)
+        <br><br> -thus where:<br>
+        -AX=8<br>
+        -BX=5<br>
+        -AX&gt;BX<br>
+        CMP AX,BX will yield:<br>
+        ZF=0<br>
+        CF=0<br>
+        As when subtracting 0101 (5) - 1000 (8) = 1100 (13):<br>
+        Thus the most MSU (0)101 was borrowed from to fill the rest since we overflowed. thus the CF flag is turned on Carry (Borrow)
+        <br><br>Where:<br>
+        -AX=5<br>
+        -BX=8<br>
+        -AX&lt;BX<br>
+        CMP BX,AX will yield: <br>
+        ZF=0<br>
+        CF=0<br>
+        As when subtracting 1000 (8) - 0101 (5) = 0011 (3)<br>
+        No mathematical borrow occurred from our most MSU.<br>
+        <br>Where:<br>
+        AX=BX<br>
+        CF=0<br>
+        ZF=1<br>
+        For obvious reasons.
+    </li>
 </ul>
 
 <h1>Good Cheat Sheet for x86-64</h1>
