@@ -1,28 +1,389 @@
+<style>
+    *:not(b) {font-weight: normal !important;}
+    table { 
+        border-collapse: collapse; 
+        vertical-align: top;
+        text-align: left;
+    }
+    th{ border: solid thin; }
+    :nth-child(odd) th:nth-child(-n+2) {white-space: nowrap;}
+    tr { border: solid thin; }
+    tr:nth-child(even) {
+        background-color: rgba(10,10,10,.1);
+        background-blend-mode: multiply;
+    }
+   
+</style>
+
 <h1>Bomb Lab</h1>
 
-<style>
-    table, th, td {
-      border:1px solid black;
-    }
-    </style>
+
 
 <ul>
     <li>
         <h2>Phase_1</h2>
-        <b>Dump</b>
         <table>
             <tr>
+                <th>Address</th>
                 <th>Source Code Dump</th>
                 <th>Notes</th>
             </tr>
 
             <tr>
+                <th>&lt;+0&gt;</th>
                 <th><code>sub $0x8, %rsp</code></th>
-                <th>subtract hexadecimal 0x8 from register %rsp.</th>
+                <th>
+                    <p>
+                        We are subtracting the literal value 0x8 (8) from %rsp --the top of stack pointer, thus we are growing the stack 8 bits since the stack grows from high->low
+                    </p>
+                   
+                    <b>Subtract hexadecimal 0x8 from register %rsp.</b>
+                </th>
+            </tr>
+
+            <tr>
+                <th>&lt;+4&gt;</th>
+                <th><code>mov $0x402480, %esi</code></th>
+                <th>
+                    <p>
+                        No Suffix, I don't understand why? <a href="https://stackoverflow.com/questions/52594200/assembly-mov-instruction-without-suffix#:~:text=Generally%2C%20if%20the%20size%20of,you%20must%20add%20a%20suffix.">see</a>. It appears that since we are using %esi which we know to be 32 bit move can unambiguously assume we are moving 32 bits?<br><br>
+                        We are moving the literal hex value 0x402480 (dec: 4203648) into the %esi subdivision of %rsi. <br><br>
+                        Since we did not provide a suffix and we are assuming 32bit from register length, I believe that means the actual value we are moving is 0x00402480 <br>
+                        %esi is the 32bit subdivision of %rsi --where %rsi is the second parameter register.
+                    </p>
+                    
+
+                    <b>Move the literal value 0x00402480 to the register %rsi </b>
+                </th>
+            </tr>
+
+            <tr>
+                <th>&lt;+9&gt;</th>
+                <th>
+                    <code>callq 0x4012ce &lt;strings_not_equal&gt;</code>
+                </th>
+                <th>
+                    <p>
+                        We are using callq, so due to the suffix we know we have a quadword 64bit.<br>
+                        it appears that We are calling the label &lt;strings_not_equal&gt; at the address 0x4012ce. Im not sure why we are using callq and passing a 32bit value though. <br>
+                        So to verify our hypothesis that we are calling the label &lt;strings_not_equal&gt; at the address 0x4012ce. Lets use disas on that label and see what we get.
+                        See below for the dump and Anal. of this.
+                    </p>
+                    <b>Call the function at the label strings_not_equal, we are specifying its second parameter to be the hex value 0x402480 in the step above</b>
+                </th>
+            </tr>
+
+            <tr>
+                <th>&lt;+14&gt;</th>
+                <th><code>test %eax,%eax</code></th>
+                <th>
+                    <p>
+                        We test if %eax AND %eax is 0 and set ZF (the zero flag) occordingly. Im not entirely sure how these condition flags work, I think they are just single bits but Im not really sure where they are? <a href="https://en.wikipedia.org/wiki/FLAGS_register">see</a>.<br>
+                        Okay so it looks like there is a 64 bit register storing 64 1 bit flags, so it is a physical cpu register that stores 64 separate flags as far as I can tell it doesn't have a '%rzx' type thing to address it it appears to just be called FLAGS/flags register
+                        <br>So we are checking if %eax AND %eax is 0 which would mean %eax itself needs to be 0 for this to set the ZF flag to true.
+                    </p>
+                    
+                    <b>We test (%eax AND %eax) == 0 and set the ZF flag in the flags register based on the result. that is ZF =1 if (%eax AND %eax) == 0 </b>
+
+                    
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+16&gt;</th>
+                <th><code>je 0x400f07 &lt;phase_1+23>&gt;</code></th>
+                <th>
+                    <p>
+                        JE is the jump if equal to zero operator, as based on the state of the ZF flag we will either jump to address of phase_1 +23 or do nothing.
+                    </p>
+
+                    <b>If ZF == true jump over the next call</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+18&gt;</th>
+                <th><code>callq 0x401534 &lt;explode_bomb&gt;</code></th>
+                <th>
+                    <p>
+                        Okay, so we are calling the label explode_bomb, 
+                        so we could get the contents of it with disas explode_bomb if we wanted to.
+                        We are using callq (so quadword, 64bit). Given this we are calling the function
+                        at 0x0000000000401534 in memory, since q implies 64 bit so we fill the rest with zeros since 
+                        we only specified the last 3 bytes. Note that 34 at the end is the LSB as its at the end and 0x00 is the MSB although 0x40 is 
+                        the MSB of the value we passed. Computers are little-endian so LSB at lowest memory address.
+                    </p>
+
+                    <b>We call the function explode_bomb at the memory address 0x401534</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+23&gt;</th>
+                <th><code>add $0x8, %rsp</code></th>
+                <th>
+                    <p>
+                        add the literal hex value 0x8 (8) to the register %rsp, rsp is the top of stack pointer,
+                        so we are shrinking the stack by 8 bits as stack grows from high->low, which means we are
+                        undoing what we did at +0, freeing up the space that we reserved earlier.
+                    </p>
+                    <b>Shrink the stack by 8 bits</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+27&gt;</th>
+                <th><code>retq</code></th>
+                <th>
+                    <p>
+                        Recall that the stack always stores the address that we need to return to once we finish
+                        executing the function. Its stored right before parameters and is usually called the "return address" 
+                        we are reiving that value from the stack and then jumping to it. Given that we specify retq 
+                        we are specifying that our return adress is a quadword (64bit) which most likely does not need
+                        to be specified. This might also set %rax to something?
+                    </p>
+                    <b>
+                        Pop the return address from the stack --jumping back to wherever this function was called from.
+                    </b>
+                </th>
+            </tr>
+        </table>
+        <h3>strings_not_equal</h3>
+        <table>
+            <tr>
+                <th>Address</th>
+                <th>Source Code Dump</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <th>&lt;+0&gt;</th>
+                <th><code>push %r12</code></th>
+                <th><p>
+                    push the value stored in the register %r12 onto the stack. Since %r12 is a Callee-Save register we need
+                    to push it onto the stack to store its value so that we can restore it later.
+                </p>
+                <b>Push the callee-save register %r12's value onto the stack</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+2&gt;</th>
+                <th><code>push %rbp</code></th>
+                <th> 
+                    <p>
+                        We need to save the value of the base of stack so that we can restore it later
+                        when we exit out of this function. since %rbp is callee-save.
+                    </p>
+                    <b>Push the value of the base of stack pointer %rbp onto the stack</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+4&gt;</th>
+                <th><code>push %rbx</code></th>
+                <th><b>Push the callee-save register %rbx's value onto the stack</b></th>
+            </tr>
+            <tr>
+                <th>&lt;+6&gt;</th>
+                <th><code>mov %rdi %rdx</code></th>
+                <th>
+                    <p>
+                        We saved %rdx above since we modify it here and will need to restore it.
+                    </p>
+                    <b>move the value of %rdi into %rdx, that is move the first param of this function into %rdx</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+7&gt;</th>
+                <th><code>mov %rsi %rbp</code></th>
+                <th>
+                    <b>Move the value of %rsi (our second parameter) into %rbp</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+10&gt;</th>
+                <th><code>callq 0x4012b1 &lt;string_length&gt;</code></th>
+                <th>
+                    <b>We are calling the function string_length</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+15&gt;</th>
+                <th><code>mov %eax $r12d</code></th>
+                <th>
+                    <p>
+                        We are moving the 32bit subdivision of %rax, the return value into the 32bit subdivision
+                        of %r12. 
+                    </p>
+                    <b>Store the 32bit return value of string_length into %r12's 32bit subdivision (%r12d)</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+18&gt;</th>
+                <th><code>move %rbp, %rdi</code></th>
+                <th>
+                    <p>
+                        Move the base stack pointer's value into %rdi --the first param register.
+                        Since we already moved the value of %rdi into %rdx we are not losing anything here
+                    </p>
+                    <b>Move the value of %rdp, our base stack pointer into %rdi, our param 1 register</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+21&gt;</th>
+                <th><code>callq 0x4012b1 &lt;string_length&gt;</code></th>
+                <th>
+                    <b>We are calling the function string_length</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+26&gt;</th>
+                <th><code>mov $0x1, %edx</code></th>
+                <th>
+                    <p>
+                        Move the literal hex value 1 into %edx (the 32bit subdivision of %rdx)
+                    </p>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+31&gt;</th>
+                <th><code>cmp %eax,%r12d</code></th>
+                <th>
+                    <p>
+                        We are using the cmp command to compare %eax --the 32 bit subdivision of %rax, the return register
+                        to the 32 bit subdivision of register 12.<br>
+                        so we are calculating %r12d - %eax. <br>
+                        Thus if %eax > %r12d then CF=1 ZF=0<br>
+                        if %eax < %r12d then CF=0 ZF=0<br>
+                        if %eax = %r12d then CF=0 ZF=1<br>
+                    </p>
+                    <b>We use the cmp command to compare %r12d - %eax and update ZF and CF</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+34&gt;</th>
+                <th><code>0x401330 &lt;strings_not_equal+98&gt;</code></th>
+                <th>
+                    <p>
+                        Jump to +98 of this function if (%r12d - %eax) != 0.
+                        +98-End is the cleanup for this function.
+                    </p>
+                    <b>
+                        Jump to +98 of this function if the zero flag is false IE: ZF == 0;<br>
+                        Therefor we are jumping to cleanup and returning 0 if the strings lengths are different.
+                    </b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+36&gt;</th>
+                <th><code>movzbl (%rbx),%eax</code></th>
+                <th>
+                    <p>
+                        We are moving the value stored at the pointer (%rbx) to %eax (the 32 bit subdivision of %rax register 'a,' our return register)
+                        <br> movz is special and takes 2 suffixes for both the first and second value, b indicates byte (8bit) and l indicates doubleword (32bit)
+                        <br> So we are moving the last byte of value at the address %rbx (which is the pointer to our second param %rdi) to %eax.
+                        <br> So that means we are working with a char here of some kind likely
+                    </p>
+                    <b>Move the value that %rbx points to into %eax</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+39&gt;</th>
+                <th><code>test %al %al</code></th>
+                <th>
+                    <p>
+                        We are testing if the last byte of %rax is 0. Then we set the ZF flag to 1 if it is zero.
+                    </p>
+                    <b>Check if last byte of %rax is 0. and set ZF flag accordingly</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+41&gt;</th>
+                <th><code>je 0x4013ed &lt;strings_not_equal+79&gt;</code></th>
+                <th>
+                    <p>
+                        If the last byte of %rax (%al) is not 0 then we jump to +79. So that means we are checking if the last char
+                        in the string == 0000 there for we are checking if the last char in the string is ascii NUL, and if its not
+                        we jump to +79 where we return false then clean up
+                    </p>
+                    <b>If ZF==0 jump to +79 of this function</b>
+                </th>
+            </tr>
+            <tr>
+                <th>&lt;+43&gt;</th>
+                <th><code> cmp 0x0(%rbp),%al</code></th>
+                <th>
+                    <p>
+                        we are comparing the value stored at %rbp to the last bit of %rax (%al)<br>
+                        I dont really understand what the whole 0x0 is about Ill probably ask in office hours<br>
+                        So we are testing %al - *0x0(%rbp).<br>
+                        (%rbp) is the first element on our stack so its our original %r12 value?<br>
+                        if %al < *0x0(%rbp) CF=1, ZF=0;<br>
+                        if %al > *0x0(%rbp) CF=0, ZF=0;<br>
+                        if %al=*0x0(%rbp) CF=0, ZF=1;<br>
+                        <br>
+                        since %al is 0000<br>
+                        CF will always be 0<br>
+                        ZF will be 1 if %r12 is 0 else it will be 1 <br>
+
+                        So what are we doing here? We are comparing some junk in %r12 to %al
+                    </p>
+                    <b>We are comparing the first element on our stack to %al, the last char of our second param which is 0000</b>
+                </th>
+            </tr>
+            <tr>
+                The rest of this function is just looping between likes 50-70 checking char by char looping through the stack?
             </tr>
         </table>
          
-        mov $0x402480, %esi ()
+        <h2>Secret Phase</h2>
+         <table>
+            <tr>
+                <th>&lt;+0&gt;</th>
+                <th><code> sub $0x8,%rsp</code></th>
+                <tr>
+                    <p>
+                        subtract 8 from the register rsp
+                    </p>
+                    <b>subtract 8 from the register rsp</b>
+                </tr>
+                <tr>
+                    <th>&lt;+4&gt;</th>
+                <th><code> test %rdi,%rdi</code></th>
+                <th>
+                    <p>
+                        check if rdi is 0
+                    </p>
+                    <b>
+                        Return 0xffffffffff if rdi is 0
+                    </b>
+                </th>
+                </tr>
+            </tr>
+         </table>
+
+         <code>
+            int fun7(rdi, rsi){ <br>
+                &ensp; if(rdi === 0){<br>
+                    &ensp;&ensp; return 0xffffffff;<br>
+                } else {<br>
+                    &ensp;%edi = *%rdi;<br>
+                    &ensp;if(%edx > %esi){<br>
+                        &ensp;&ensp;%rdi = *(%rdi + 8);<br>
+                        &ensp;&ensp;fun7(rdi, rsi);<br>
+                        &ensp;&ensp;%eax = %eax + %eax;<br>
+                        &ensp;&ensp;rsp += 8;<br>
+                        &ensp;&ensp;return %rax<br>
+                        &ensp;} else{<br>
+                            &ensp;&ensp;%eax = 0;<br>
+                            &ensp;&ensp;if($esi-%edx ==0){<br>
+                                &ensp;&ensp;&ensp;return %rax<br>
+                                &ensp;&ensp;} else {<br>
+                                    &ensp;&ensp;&ensp; %rdi = *(rdi+10);<br>
+                                    &ensp;&ensp;&ensp;fun7(%rdi, %rsi)<br>
+                                    &ensp;&ensp;&ensp;%rsp += 8;<br>
+                                    &ensp;&ensp;&ensp;return %rax<br>
+                                    &ensp;&ensp;&ensp;}<br>
+                                    &ensp;&ensp;}<br>
+
+                                    &ensp;}<br>
+            }<br>
+            
+         </code>
     </li>
 
 
