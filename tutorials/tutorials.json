@@ -8,8 +8,8 @@
     "CS2060Specific": {
         "title": "UCCS CS2060 Specific"
     },
-    "about": {
-        "title": "What Is This Project"
+    "cSharp": {
+        "title": "C#"
     },
     "markdownTutorial": {
         "title": "Markdown tutorial"
