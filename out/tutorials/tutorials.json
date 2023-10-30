@@ -13,5 +13,8 @@
     },
     "markdownTutorial": {
         "title": "Markdown tutorial"
+    },
+    "unix":{
+        "title": "UCCS CS2080 Notes"
     }
 }

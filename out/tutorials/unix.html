@@ -11,13 +11,19 @@
         background-color: rgba(10,10,10,.1);
         background-blend-mode: multiply;
     }
+    code {
+        font-family: "Red Hat Mono",monospace;
+        border: 1px solid #ccc;
+        background-color: #f8f8f8;
+        display: block;
+        padding: 0.5em;
+        margin: 0.5em;
+        color: #222;
+        line-height: 1.3;
+        overflow: auto;
+    }
 
-    code::after {
-        content: '"';
-    }
-    code::before {
-        content: '"';
-    }
+   
 
    
 </style>
@@ -332,8 +338,159 @@
         </table>
     </p>
 
+    <h3>SED examples</h3>
+    <table>
+        <tr>
+            <th>Command</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <th>
+                <code>sed -n '1p' ./file.txt </code>
+            </th>
+            <tr>
+                <b>Print first Line</b>
+                <br>
+                -n hides original output, otherwise this would print the whole file + the first line.
+                <br>1p indicates line 1, print command.
+            </tr>
+        </tr>
+        <tr>
+            <th>
+                <code>sed -n '1,4p' ./file.txt</code>
+            </th>
+            <th>
+                <b>print range of lines via sed</b><br>
+                1,4 indicates lines 1-4 via print command (p)<br>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <code>sed -n '$p' ./file.txt</code>
+            </th>
+            <th>
+                <b>print last line</b><br>
+                '$' appears to be a special char indicating index of last line? but I don't rly know. <br>
+                But working under that assertion, we just treat $ as a macro of last line, so print last line literally.
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <code>sed 's/old/new' ./file.txt</code>
+            </th>
+            <th>
+                <b>replace literal string old, with new</b><br>
+                This is the frame work for find and replace with sed, just slap a -i to edit in place and add in your regex.
+            </th>
+        </tr>
+    </table>
+    See below for a nice cheat sheet:<br>
+    <a href="https://quickref.me/sed.html">here</a><br>
+    <iframe src="https://quickref.me/sed.html"></iframe>
+
+    <h3>awk</h3>
+    <a href="https://opensource.com/sites/default/files/gated-content/a_practical_guide_to_learning_gnu_awk.pdf">see for more</a><br>
+    <a href="https://quickref.me/awk.html">cheat sheet</a>
+    The structure of a standard awk command is as follows<br> <br>
+    
+    <code>pattern or keyword {action}</code>
+    this explains why you see {} every where even when you seemingly don't have a pattern. because if it is by itself it will run regardless of condition.
+    But still needs the syntax {} as thats how you execute an action. <br>
+    <p>
+        <h4>Awk Variables</h4>
+        <div class="h3-wrap">
+            <h3 id="build-in-variables"><a class="h-anchor" href="#build-in-variables">#</a>Build-in variables</h3>
+            <div class="section">
+            <table>
+            <thead>
+            <tr>
+            <th>Var name/key</th>
+            <th>description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td>$0</td>
+            <td>Whole line</td>
+            </tr>
+            <tr>
+            <td>$1, $2...$NF</td>
+            <td>First, second… last field</td>
+            </tr>
+            <tr>
+            <td>NR<</td>
+            <td>Number of Records</td>
+            </tr>
+            <tr>
+            <td>NF</td>
+            <td>Number of Fields</td>
+            </tr>
+            <tr>
+            <td>OFS</td>
+            <td>Output Field Separator  <br> <em>(default " ")</em></td>
+            </tr>
+            <tr>
+            <td>FS</td>
+            <td>input Field Separator <br> <em>(default " ")</em></td>
+            </tr>
+            <tr>
+            <td>ORS</td>
+            <td>Output Record Separator <br> <em>(default "\n")</em></td>
+            </tr>
+            <tr>
+            <td>RS</td>
+            <td>input Record Separator <br> <em>(default "\n")</em></td>
+            </tr>
+            <tr>
+            <td>FILENAME</td>
+            <td>Name of the file</td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            </div>
+
+    </p>
+    <table>
+        <tr>
+            <th>Command</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <th><code>awk '{print $1}'</code></th>
+            <th>Print the first column of data.</th>
+        </tr>
+        <tr>
+            <th><code>awk '{print $2}'</code></th>
+            <th>Print the second column of data.</th>
+        </tr>
+        <tr>
+            <th>
+                <code>awk 'END {print}'</code><br> or
+                <code>awk 'END {print $0}'</code>
+            </th>
+            <th>Print the last line.</th>
+        </tr>
+        <tr>
+            <th><code>awk 'END {print $1}'</code></th>
+            <th>Print the first col of the last line.</th>
+        </tr>
+        <tr>
+            <th><code>awk 'END {print $1+$2}'</code></th>
+            <th>print the value of col 1 + col 2 on the last line</th>
+        </tr>
+        <tr>
+            <th><code>awk 'END {print $1*$2}'</code></th>
+            <th>print the value of col 1 * col 2 on the last line</th>
+        </tr>
+        <tr>
+            <th><code>awk '{gsub(/apple/, "bannana"); print}' ./fruits.txt > ./fruits.txt</code></th>
+            <th>uses the gsub command to replace regEx matches of apple with bannana, and then uses the > opperator to overwrite original file with output.</th>
+        </tr>
+    </table>
+
     
 
-    <h1>30 Page Study Guide Armin Moin Midterm 1</h1>
+    <h1>30 Page Study Guide Armin Moin Midterm 1 (not mine, but they wouldn't want credit)</h1>
     <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://github.com/mattieFM/techdocs/raw/main/static/UnixStudyBulk.docx" width="1366px" height="623px" frameborder="0">This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> document, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.</iframe>
 </body>
