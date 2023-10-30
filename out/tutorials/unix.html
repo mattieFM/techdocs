@@ -1,6 +1,339 @@
+<style>
+    *:not(b) {font-weight: normal !important;}
+    table { 
+        border-collapse: collapse; 
+        vertical-align: top;
+        text-align: left;
+    }
+    th{ border: solid thin; }
+    tr { border: solid thin; }
+    tr:nth-child(even) {
+        background-color: rgba(10,10,10,.1);
+        background-blend-mode: multiply;
+    }
+
+    code::after {
+        content: '"';
+    }
+    code::before {
+        content: '"';
+    }
+
+   
+</style>
+
 <body>
+    <h1>Welcome my UNIX notes</h1>
 
 
 
-    <iframe src="https://docs.google.com/gview?url=./static/UnixStudyBulk.docx&embedded=true"></iframe>
+    <h1>Test Prep</h1>
+    <h2>Mid Term 1</h2>
+    <p>
+        !IMPORTANT!: if Armin Moin docs you points on a test for an answer that is correct go to office hours and show him I was docked ~25% on questions that I got right which he thought I got wrong.
+    </p>
+
+    <p>
+        Questions on test 1 and answers
+        <table>
+            <tr>
+                <th> #</th>
+                <th> Points</th>
+                <th> Question</th>
+                <th> Answer</th>
+            </tr>
+            <tr>
+                <th>1</th>
+                <th>3</th>
+                <th>What is the main mechanism for the interaction between the operating system and the hardware resources? Name it and describe it briefly.</th>
+                <th><details><summary>Click to show Answer</summary>
+                    Drivers. In order for the OS to talk to hardware, drivers are needed to provide machine level instructions.
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>2</th>
+                <th>3</th>
+                <th>Name 3 common sub directories of the Ubuntu Linux root directory.</th>
+                <th><details><summary>Click to show Answer</summary> 
+                    any of these:<br>
+                    a) /bin, <br> b) /boot,<br> c)
+/dev,<br> d) /etc,<br> e) /home,<br> f) /lib,<br> g) /media,<br> h) /mnt,<br> i) /opt,<br> j) /sbin,<br> k) /srv,<br> l) /tmp,<br> m) /usr,<br> n)
+/proc,<br> o) /var,<br> p) /root.
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>3</th>
+                <th>2</th>
+                <th>What is a process.</th>
+                <th><details><summary>Click to show Answer</summary>
+                    In UNIX everything you do, every command you type, every task performed is a process/job.<br>
+                    I got marked down for the correct answer, I think just don't include the word "Machine" and include "O.S" instead?<br>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>4</th>
+                <th>2</th>
+                <th>Explain duel/multiple mode of operation and their benefits.</th>
+                <th><details><summary>Click to show Answer</summary>
+                    I got marked down even though I had the right answer, but duel/multiple modes refers to the ability to have different modes of opperation with different levels of security.
+                    IE: super user mode vs regular user mode, and so forth. This allows greater security.
+                </details></th>
+            </tr>
+
+            
+            <tr>
+                <th>5</th>
+                <th>2</th>
+                <th>Describe 2 of the basic freedoms that "Free and open source software" promise</th>
+                <th><details><summary>Click to show Answer</summary>
+                   <ul>
+                    <li>0: freedom to run the program as you wish (use)</li>
+                    <li>1: freedom to change and modify the program as you wish (access to source code is a predecessor to this freedom) (modify & inspect)</li>
+                    <li>2: freedom to redistribute the software (sell)</li>
+                    <li>3: freedom to distribute modified copies. (sell)</li>
+                   </ul>
+                   Or. Use, Modify, Inspect, Sell. <br>
+                   UMIS (like unix but a diplex spelled it)
+                   <ol><li><b>The freedom to inspect or view</b>. In software, this came from the freedom to study how the program works, and change it to make it do what you wish . Access to the source code is a precondition for this - such as FreeCAD files, text documents, spreadsheets, calculations, instructions, etc.</li>
+                    <li><b>The freedom to use</b>. Run or otherwise execute the software, product, or process. You may be charged for using the thing. But this is a moot point, because as soon as someone buys it, it can be released for free.</li>
+                    <li><b>The freedom to modify</b>. This is a big point: making improvements or adaptation is a key to distributing value.</li>
+                    <li><b>Economic freedom.</b> The freedom to distribute or sell. Freedom distribute copies of your modified versions to others. By doing this you can give the whole community a chance to benefit from your changes. Access to the source code is a precondition for this. </li></ol>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>6</th>
+                <th>1</th>
+                <th>Name a graphical environment that targets low-power platforms.</th>
+                <th><details><summary>Click to show Answer</summary>
+                    KDE.<br>
+                    You need to know enough about each so that you can answer this. <br>
+                    <ol>
+                        <li>Gnome -High power, used for personal computers often.</li>
+                        <li>KDE - low power high efficiency</li>
+                    </ol>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>7</th>
+                <th>2</th>
+                <th>Unix Philosophy</th>
+                <th><details><summary>Click to show Answer</summary>
+                    1: Every program should be designed under the assertion that it can/will take input from another process and its output will be used as the input for another job. This ties in with the lesser
+                    idea that all processes should be built to use text interface so that piping is easy. <br>
+                    2: Every program should do one task only and do it well. (Single Responsibility Principle).<br>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>8</th>
+                <th>2</th>
+                <th>Write commands for upgrading a specific software package called 'X" assume the \etc\sources\list file may have been recently modified</th>
+                <th><details><summary>Click to show Answer</summary>
+                    apt-get upgrade to upgrade all.<br>
+                    or apt-get install --only-upgrade X  to upgrade just X (technically you can just do apt-get install X which will also upgrade)<br>
+                    since we were told \etc\sources\list was modified we should know that X exists within it and apt-get upgrade will upgrade x
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>9</th>
+                <th>1</th>
+                <th>What O.S component always runs after bootstrapping?</th>
+                <th><details><summary>Click to show Answer</summary>
+                    Kernel.
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>10</th>
+                <th>6</th>
+                <th>Define permissive vs non-permissive open source licenses and give one example.</th>
+                <th><details><summary>Click to show Answer</summary>
+                    <ul>
+                        <li>Permissive licenses are like CC0 licenses you are allowed basically full access to do anything <b>including privatize your new software made from the open source software. IE: gpl</b></li>
+                        <li>Non-Permissive licenses are like CC-SA licenses, anything derived from a project licenced under one must remain under one. IE software cannot be monopolized and privatized. IE: mit</li>
+                    </ul>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>11 a</th>
+                <th>1</th>
+                <th>Create a file named students.txt</th>
+                <th><details><summary>Click to show Answer</summary>
+                    touch ./students.txt;
+                    vim ./students.txt;
+                    echo '' >> ./students.txt;
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>11 b</th>
+                <th>2</th>
+                <th>Show all files and directories and show hidden files</th>
+                <th><details><summary>Click to show Answer</summary>
+                    ls -a <br>
+                    ls, list <br>
+                    -a: all option<br>
+                    -l: would show owners and mods
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>11 c</th>
+                <th>18</th>
+                <th>Show 2 ways to give rwxr----- permission to a file</th>
+                <th><details><summary>Click to show Answer</summary>
+                    Recall:
+                    <ul>
+                        <li>1: execute</li>
+                        <li>2: write</li>
+                        <li>1+2=3: xw</li>
+                        <li>4: read</li>
+                        <li>etc...</li>
+                    </ul>
+                   <code>chmod 740 ./file.exe</code> <br>
+                   <code>chmod u=rwx,g=r,o-rwx</code> <br>
+                   <code>chmod u+rwx,g=r,o=---</code> <br>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>11 d</th>
+                <th>4</th>
+                <th>Use a file editor</th>
+                <th><details><summary>Click to show Answer</summary>
+                    For vim enter insert mode with i, then type, then hit esc and then :wq to write quit. <br>
+                    for nano, there is only one mode so just type, then ctrl+s to save. ctrl+x to exit. <br>
+                    for Vi same as vim <br>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>11 e</th>
+                <th>1</th>
+                <th>Print the first line of a file.</th>
+                <th><details><summary>Click to show Answer</summary>
+                    Many ways <Br>
+                    <ul>
+                        <li><code>head -n 1 ./file.txt</code> head displays 10 by default, -n 1 specifies display 1</li>
+                        <li><code>sed -n '1p' ./file.txt</code> sed is standard steam editor, p is print command, 1 indicates line 1. so print lines 1-4 would be <code>sed '1,4p' ./students.txt</code></li>
+                        <li><code>awk 'NR == 1' ./students.txt</code> get line when NR is 1, so when line number is 1 get the line. </li>
+                    </ul>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>11 f</th>
+                <th>1</th>
+                <th>Print the last line of a file.</th>
+                <th><details><summary>Click to show Answer</summary>
+                    Many ways <Br>
+                    <ul>
+                        <li><code>tail -n 1 ./file.txt</code> head displays 10 by default, -n 1 specifies display 1</li>
+                        <li><code>sed -n '$p' ./file.txt</code> sed is standard steam editor, p is print command, $ last line. -n suppresses default out.</li>
+                        <li><code>awk 'END{print} ./students.txt</code> END is called on last line and stores the last line so print last line</li>
+                    </ul>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>11 g</th>
+                <th>4</th>
+                <th>Use grep to find patterns that include l,m,n,o,p,q in students.txt</th>
+                <th><details><summary>Click to show Answer</summary>
+                   <code>grep [l,m,n,o,p] ./students.txt</code> Recall that grep is just regex, so provide a regEx to find those letters.
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>12</th>
+                <th>2</th>
+                <th>What is piping?</th>
+                <th><details><summary>Click to show Answer</summary>
+                   Piping sends the output of one file to the input of another. <br>For instance: <br>
+                   <code>echo "./students" | cat</code> will effectively call cat ./students. <br>
+                   <b>DO NOT CONFUSE THIS WITH REDIRECTS</b>
+                   <br>
+                   <ul>
+                    <li>&gt;&gt;: redirects input to a file appending it to the end</li>
+                    <li>&gt;: redirects input to a file overwriting the file</li>
+                   </ul>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>13</th>
+                <th>4</th>
+                <th>Print the forth line of students.txt with sed</th>
+                <th><details><summary>Click to show Answer</summary>
+                   <ol>
+                    <li><code>sed -n '4p' ./students.txt</code> print the fourth line of the ./students.txt file. That is find the 4th index and call the print cmd on it. use -n to suppress default out.</li>
+                    <li><code>awk 'NR == 4' ./students.txt</code> when NF (Number of Records (lines?)) is 4 print the line</li>
+                 
+                   </ol>
+                </details></th>
+            </tr>
+            <tr>
+                <th>14</th>
+                <th>8</th>
+                <th>Print the forth line of students.txt with awk, then print the second col</th>
+                <th><details><summary>Click to show Answer</summary>
+                   <ol>
+                    <li><code>awk 'NR == 4' ./students.txt</code> when NF (Number of Records (lines?)) is 4 print the line</li>
+                 
+                   </ol>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>15</th>
+                <th>3</th>
+                <th>Get number of lines in file</th>
+                <th><details><summary>Click to show Answer</summary>
+                   <ol>
+                    <li><code>awk 'END{print NR}' ./students.txt</code> NR is current line, so when we are on the last line</li>
+                    <li><code>sed -n \$= ./students.txt</code> FUCK SED, but... <br>
+                        looks like \n= is the command for get line number of n, so if we do \$= then we get line number of $ which is special char for last number  then -n to supress base result.</li>
+                 
+                   </ol>
+                </details></th>
+            </tr>
+            <tr>
+                <th>16</th>
+                <th>6</th>
+                <th>compile</th>
+                <th><details><summary>Click to show Answer</summary>
+                   <ol>
+                    <li>C: gcc ./program.c</li>
+                    <li>java: javac ./program.java</li>
+                    <li>idk to write more.</li>
+                   </ol>
+                </details></th>
+            </tr>
+
+            <tr>
+                <th>17</th>
+                <th>3</th>
+                <th>show all strings in file</th>
+                <th><details><summary>Click to show Answer</summary>
+                    So I think he means find all things matching the syntax of "blahblah" so...
+                   <ol>
+                    <li><code>grep '".*"' ./file.txt</code> just match between 2 ", you might need .*? to make the quantifier lazy depending.</li>
+                   </ol>
+                </details></th>
+            </tr>
+        
+        </table>
+    </p>
+
+    
+
+    <h1>30 Page Study Guide Armin Moin Midterm 1</h1>
+    <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://github.com/mattieFM/techdocs/raw/main/static/UnixStudyBulk.docx" width="1366px" height="623px" frameborder="0">This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> document, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.</iframe>
 </body>
