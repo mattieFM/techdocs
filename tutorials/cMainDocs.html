@@ -1,3 +1,33 @@
+<style>
+    *:not(b) {font-weight: normal !important;}
+    table { 
+        border-collapse: collapse; 
+        vertical-align: top;
+        text-align: left;
+    }
+    th{ border: solid thin; }
+    tr { border: solid thin; }
+    tr:nth-child(even) {
+        background-color: rgba(10,10,10,.1);
+        background-blend-mode: multiply;
+    }
+    code {
+        font-family: "Red Hat Mono",monospace;
+        border: 1px solid #ccc;
+        background-color: #f8f8f8;
+        display: block;
+        padding: 0.5em;
+        margin: 0.5em;
+        color: #222;
+        line-height: 1.3;
+        overflow: auto;
+    }
+
+   
+
+   
+</style>
+
 <body style="font-size: 18px;">
     <h1>Arrays</h1>
     In C arrays function similarly to most languages although they are stored on the stack instead of the heap. The use of Size_T type variables is recommended for 
@@ -28,5 +58,22 @@
     I bring this up to segway into a bigger point about C. Given its nature and ability to be very small and run on micro controllers, 
     you have to import just about everything you would want to use. It has a ton of features built into it, but to use them you need to include them.
 
+
+    <h1>Test 2 Notes</h1>
+
+    <h2>Files</h2>
+    <img src="https://github.com/mattieFM/techdocs/blob/main/static/ctest1.png?raw=true">
+
+    <ol>
+        <li><b>Make a file ptr</b><br> 
+            <code>FILE * filePtr = fopen ("./path", "mode")</code> 
+            <ul>
+                <h4>modes</h4>
+                <li>w : write</li>
+                <li>r : read</li>
+                <li>a : append</li>
+            </ul>
+        </li>
+    </ol>
 
 </body>
