@@ -67,13 +67,61 @@
     <ol>
         <li><b>Make a file ptr</b><br> 
             <code>FILE * filePtr = fopen ("./path", "mode")</code> 
-            <ul>
-                <h4>modes</h4>
-                <li>w : write</li>
-                <li>r : read</li>
-                <li>a : append</li>
-            </ul>
+            <table class="table table-bordered">
+                <tbody><tr>
+                <th style="text-align:center;">Sr.No.</th>
+                <th style="text-align:center;">Mode &amp; Description</th>
+                </tr>
+                <tr>
+                <td class="ts">1</td>
+                <td><p><b>r</b></p>
+                <p>Opens an existing text file for reading purpose.</p></td>
+                </tr>
+                <tr>
+                <td class="ts">2</td>
+                <td><p><b>w</b></p>
+                <p>Opens a text file for writing. If it does not exist, then a new file is created. Here your program will start writing content from the beginning of the file.</p></td>
+                </tr>
+                <tr>
+                <td class="ts">3</td>
+                <td><p><b>a</b></p>
+                <p>Opens a text file for writing in appending mode. If it does not exist, then a new file is created. Here your program will start appending content in the existing file content.</p></td>
+                </tr>
+                <tr>
+                <td class="ts">4</td>
+                <td><p><b>r+</b></p>
+                <p>Opens a text file for both reading and writing.</p></td>
+                </tr>
+                <tr>
+                <td class="ts">5</td>
+                <td><p><b>w+</b></p>
+                <p>Opens a text file for both reading and writing. It first truncates the file to zero length if it exists, otherwise creates a file if it does not exist.</p></td>
+                </tr>
+                <tr>
+                <td class="ts">6</td>
+                <td><p><b>a+</b></p>
+                <p>Opens a text file for both reading and writing. It creates the file if it does not exist. The reading will start from the beginning but writing can only be appended.</p></td>
+                </tr>
+                </tbody></table>
+            If no connection is established null is returned<br>
+            if a connection is established the pointer to file struct is returned. <br>
+        </li>
+
+        <li>
+            <b>check end of file marker</b>
+            <p>The below code will check if the current char the filePtr points to in the file is the eof marker.</p>
+            <code>feof(filePtr)</code>
+            
+        </li>
+        <li>
+
         </li>
     </ol>
+    <h3>file docs</h3>
+    <iframe src="https://pubs.opengroup.org/onlinepubs/7908799/xsh/stdio.h.html" width="100%" height="400%"></iframe>
+
+
+
+
 
 </body>
